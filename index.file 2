@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday, my yayo!</title>
+<style>
+/* ---------- Cute Animated Gradient Background ---------- */
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  position: relative;
+  background: linear-gradient(135deg, #ffe6f0, #ffd6e8, #fff8e7, #cce7ff);
+  background-size: 400% 400%;
+  animation: bgGradient 20s ease infinite;
+}
+
+@keyframes bgGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ---------- Background Sparkles & Floating Hearts ---------- */
+.bgSparkle, .bgHeart {
+  position: fixed;
+  border-radius: 50%;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.bgSparkle {
+  width: 4px;
+  height: 4px;
+  background: #fff1f8;
+  animation: sparkleMove 6s linear infinite;
+}
+
+.bgHeart {
+  width: 12px;
+  height: 12px;
+  background: pink;
+  clip-path: polygon(50% 15%, 61% 0, 75% 0, 88% 13%, 88% 28%, 78% 40%, 50% 70%, 22% 40%, 12% 28%, 12% 13%, 25% 0, 39% 0);
+  animation: heartFloat 8s linear infinite;
+}
+
+@keyframes sparkleMove {
+  0% { transform: translateY(100vh) scale(0.5); opacity: 0.6; }
+  100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+}
+
+@keyframes heartFloat {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+
+/* ---------- Player as Cute Animated Box ---------- */
+#player {
+  width: 64px;
+  height: 64px;
+  position: absolute;
+  background: linear-gradient(135deg, #ffb6d6, #ffd6e8);
+  border-radius: 16px;
+  border: 2px solid #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: bounce 1.2s infinite alternate, wiggle 2s infinite ease-in-out;
+}
+
+#player::before, #player::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 20px;
+  animation: blink 4s infinite;
+}
+#player::before { left: 15px; }
+#player::after { right: 15px; }
+
+#player .smile {
+  position: absolute;
+  bottom: 15px;
+  width: 24px;
+  height: 12px;
+  border-bottom: 3px solid #fff;
+  border-radius: 50%;
+  animation: smileWiggle 2s infinite ease-in-out;
+}
+
+@keyframes bounce { 0% { transform: translateY(0); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0); } }
+@keyframes wiggle { 0% { transform: rotate(0deg); } 25% { transform: rotate(2deg); } 50% { transform: rotate(0deg); } 75% { transform: rotate(-2deg); } 100% { transform: rotate(0deg); } }
+@keyframes blink { 0%,90%,100% { transform: scaleY(1); } 92%,96% { transform: scaleY(0.1); } }
+@keyframes smileWiggle { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(3deg); } }
+
+/* ---------- Hearts ---------- */
+.heart {
+  width: 28px;
+  height: 28px;
+  background: red;
+  clip-path: polygon(50% 15%, 61% 0, 75% 0, 88% 13%, 88% 28%, 78% 40%, 50% 70%, 22% 40%, 12% 28%, 12% 13%, 25% 0, 39% 0);
+  position: absolute;
+  animation: pulse 1s infinite ease-in-out, rotateHeart 4s linear infinite;
+}
+
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+@keyframes rotateHeart { 0% { transform: rotate(0deg); } 50% { transform: rotate(10deg); } 100% { transform: rotate(0deg); } }
+
+/* ---------- UI ---------- */
+#messageBox {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  width: 280px;
+  min-height: 130px;
+  padding: 16px;
+  background: #ffd6e8;
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  font-size: 14px;
+  line-height: 1.45em;
+  animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+.sparkle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #fff4fb;
+  border-radius: 50%;
+  opacity: 0.95;
+  animation: sparklePop 0.6s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes sparklePop { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(1.8); opacity: 0; } }
+
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 0.9;
+  transform: rotate(0deg);
+  animation: fall 2s linear forwards;
+}
+@keyframes fall { 0% { transform: translateY(0) rotate(0deg); opacity:1; } 100% { transform: translateY(600px) rotate(360deg); opacity:0; } }
+
+#score { position: fixed; top: 15px; left: 15px; font-size: 18px; font-weight: bold; color: #ff4d88; }
+
+#playAgain {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background: #ffb6d6;
+  color: #fff;
+  font-size: 22px;
+  font-weight: bold;
+  padding: 16px 28px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  display: none;
+  animation: pop 0.5s ease-out infinite alternate;
+}
+@keyframes pop { 0% { transform: translate(-50%,-50%) scale(0.9); } 100% { transform: translate(-50%,-50%) scale(1); } }
+#playAgain:hover { background: #ff92c1; }
+</style>
+</head>
+<body>
+
+<audio id="bgm" autoplay loop>
+  <source src="wishlist.mp3" type="audio/mpeg">
+</audio>
+<audio id="popSound">
+  <source src="pop.mp3" type="audio/mpeg">
+</audio>
+
+<div id="player"><div class="smile"></div></div>
+<div id="messageBox">Collect all the hearts 💖</div>
+<div id="score">Hearts: 0</div>
+<button id="playAgain">Play Again</button>
+
+<script>
+/* ---------- Background sparkles & hearts ---------- */
+function spawnBackgroundDecor() {
+  for(let i=0;i<30;i++){
+    let s=document.createElement("div");
+    s.className="bgSparkle";
+    s.style.left=Math.random()*window.innerWidth+"px";
+    s.style.top=Math.random()*window.innerHeight+"px";
+    s.style.animationDuration=4+Math.random()*4+"s";
+    document.body.appendChild(s);
+  }
+  for(let i=0;i<20;i++){
+    let h=document.createElement("div");
+    h.className="bgHeart";
+    h.style.left=Math.random()*window.innerWidth+"px";
+    h.style.top=Math.random()*window.innerHeight+"px";
+    h.style.animationDuration=6+Math.random()*6+"s";
+    document.body.appendChild(h);
+  }
+}
+spawnBackgroundDecor();
+
+/* ---------- Game Variables ---------- */
+let messages=["Happy Birthday, my love ❤️","I made this little game just for you.","Thank you for being the brightest part of my life.","You make everything softer, sweeter, warmer."];
+let msgIndex=0, score=0;
+const player=document.getElementById("player");
+let x=80, y=80, speed=6, heartsCount=6;
+
+/* ---------- Create Hearts ---------- */
+function createHearts(count=heartsCount){
+  for(let i=0;i<count;i++){
+    let h=document.createElement("div");
+    h.classList.add("heart");
+    h.style.left=Math.random()*(window.innerWidth-50)+"px";
+    h.style.top=Math.random()*(window.innerHeight-50)+"px";
+    h.dataset.vx=(Math.random()*2-1)*2;
+    h.dataset.vy=(Math.random()*2-1)*2;
+    document.body.appendChild(h);
+  }
+}
+createHearts();
+
+/* ---------- Player Movement ---------- */
+let keys={};
+document.addEventListener("keydown",e=>{keys[e.key]=true;});
+document.addEventListener("keyup",e=>{keys[e.key]=false;});
+
+function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
+
+function movePlayer(){
+  if(keys["ArrowUp"]||keys["w"]) y-=speed;
+  if(keys["ArrowDown"]||keys["s"]) y+=speed;
+  if(keys["ArrowLeft"]||keys["a"]) x-=speed;
+  if(keys["ArrowRight"]||keys["d"]) x+=speed;
+
+  x=clamp(x,0,window.innerWidth-64);
+  y=clamp(y,0,window.innerHeight-64);
+
+  player.style.left=x+"px";
+  player.style.top=y+"px";
+
+  moveHearts();
+  checkCollision();
+  createTrail();
+  requestAnimationFrame(movePlayer);
+}
+
+/* ---------- Heart Movement ---------- */
+function moveHearts(){
+  document.querySelectorAll(".heart").forEach(h=>{
+    let left=parseFloat(h.style.left)+parseFloat(h.dataset.vx);
+    let top=parseFloat(h.style.top)+parseFloat(h.dataset.vy);
+    if(left<=0||left>=window.innerWidth-28) h.dataset.vx*=-1;
+    if(top<=0||top>=window.innerHeight-28) h.dataset.vy*=-1;
+    h.style.left=(parseFloat(h.style.left)+parseFloat(h.dataset.vx))+"px";
+    h.style.top=(parseFloat(h.style.top)+parseFloat(h.dataset.vy))+"px";
+  });
+}
+
+/* ---------- Collision Detection ---------- */
+function checkCollision(){
+  document.querySelectorAll(".heart").forEach(h=>{
+    const rect1=player.getBoundingClientRect();
+    const rect2=h.getBoundingClientRect();
+    if(!(rect1.right<rect2.left||rect1.left>rect2.right||rect1.bottom<rect2.top||rect1.top>rect2.bottom)){
+      createSparkle(rect2.left,rect2.top);
+      document.getElementById("popSound").play();
+      h.remove();
+      score++;
+      document.getElementById("score").textContent=`Hearts: ${score}`;
+      revealMessage();
+      if(score===heartsCount) showConfettiAndPlayAgain();
+    }
+  });
+}
+
+/* ---------- Sparkles ---------- */
+function createSparkle(px,py){
+  for(let i=0;i<6;i++){
+    let s=document.createElement("div");
+    s.className="sparkle";
+    s.style.left=px+(Math.random()*20-10)+"px";
+    s.style.top=py+(Math.random()*20-10)+"px";
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),600);
+  }
+}
+
+/* ---------- Player Trail ---------- */
+function createTrail(){
+  let t=document.createElement("div");
+  t.className="sparkle";
+  t.style.left=x+28+"px";
+  t.style.top=y+28+"px";
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),500);
+}
+
+/* ---------- Messages ---------- */
+function revealMessage(){
+  const box=document.getElementById("messageBox");
+  if(msgIndex<messages.length){box.textContent=messages[msgIndex]; msgIndex++;}
+  else{
+    box.innerHTML=`<strong>My Letter For You 💌:</strong><br><br>
+      My love,<br><br>
+      Happy birthday. You are the most comforting, warm,
+      gentle part of my life. I am endlessly grateful for you — for the laughter,
+      the kindness, the softness you bring into the world and to me.<br><br>
+      I hope you feel loved today, because you are. Every single day.<br><br>
+      I love you. ❤️`;
+  }
+}
+
+/* ---------- Confetti & Play Again ---------- */
+function showConfettiAndPlayAgain(){
+  for(let i=0;i<150;i++){
+    let c=document.createElement("div");
+    c.className="confetti";
+    c.style.background=`hsl(${Math.random()*360},80%,65%)`;
+    c.style.left=Math.random()*window.innerWidth+"px";
+    c.style.top=Math.random()*-200+"px";
+    c.style.animationDuration=2+Math.random()*2+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4000);
+  }
+  document.getElementById("playAgain").style.display="block";
+}
+
+document.getElementById("playAgain").addEventListener("click",()=>{
+  score=0; msgIndex=0;
+  document.getElementById("score").textContent="Hearts: 0";
+  document.getElementById("messageBox").textContent="Collect all the hearts 💖";
+  document.getElementById("playAgain").style.display="none";
+  document.querySelectorAll(".heart").forEach(h=>h.remove());
+  createHearts();
+});
+
+/* ---------- Start Game ---------- */
+movePlayer();
+</script>
+</body>
+</html>
